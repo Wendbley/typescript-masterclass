@@ -1,4 +1,9 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import {
+	createBrowserRouter,
+	createRoutesFromElements,
+	Route,
+	RouterProvider,
+} from 'react-router-dom'
 import Home from './pages/Home'
 import RootLayout from './pages/dashboard/RootLayout'
 import Tickets from './pages/tickets/Tickets'
@@ -10,36 +15,59 @@ import { getSession } from './api/api.Client'
 import CreateTicket from './pages/tickets/CreateTicket'
 import { addTicketAction } from './api/api.Actions'
 import SingleTicket from './pages/tickets/SingleTicket'
-
+import ProtectedLayout from './pages/auth/ProtectedLayout'
 
 function App() {
-	const user = null
-	console.log(user)
-
-	const router = createBrowserRouter([
-		{
-			path: '/',
-			element: <AuthLayout />,
-			loader: async () => await getSession(),
-			children: [
-				{ index: true, element: <Login /> },
-				{ path: '/login', element: <Login /> },
-				{ path: '/register', element: <Register /> },
-				{ path: '/verify', element: <Verify /> },
-			],
-		},
-		{
-			path: '/dashboard',
-			element: <RootLayout />,
-			loader: async () => await getSession(),
-			children: [
-				{ index: true, element: <Home /> },
-				{ path: 'tickets', element: <Tickets /> },
-				{ path: 'tickets/:id', element: <SingleTicket />, loader: async () => await getSession(),},
-        { path: 'tickets/create', element: <CreateTicket />, action: addTicketAction },
-			],
-		},
-	])
+	const router = createBrowserRouter(
+		createRoutesFromElements(
+			<Route
+				path='/'
+				loader={async () => await getSession()}
+				element={<AuthLayout />}>
+				<Route element={<ProtectedLayout />}>
+					<Route
+						index
+						element={<Login />}
+					/>
+					<Route
+						path='/login'
+						element={<Login />}
+					/>
+					<Route
+						path='/register'
+						element={<Register />}
+					/>
+					<Route
+						path='/verify'
+						element={<Verify />}
+					/>
+				</Route>
+				<Route
+					path='/dashboard'
+					loader={async () => await getSession()}
+					element={<RootLayout />}>
+					<Route
+						index
+						element={<Home />}
+					/>
+					<Route
+						path='tickets'
+						element={<Tickets />}
+					/>
+					<Route
+						path='tickets/:id'
+						loader={async () => await getSession()}
+						element={<SingleTicket />}
+					/>
+					<Route
+						path='tickets/create'
+						element={<CreateTicket />}
+						action={addTicketAction}
+					/>
+				</Route>
+			</Route>
+		)
+	)
 
 	return <RouterProvider router={router} />
 }

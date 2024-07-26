@@ -2,7 +2,6 @@
 import { useLoaderData, useParams } from 'react-router-dom'
 import { getTicket, TicketType } from '../../api/api.Tickets'
 import { useState, useEffect } from 'react'
-import { getSession } from '../../api/api.Client'
 import DeleteIcon from '../../components/tickets/DeleteIcon'
 import { Session } from '@supabase/supabase-js'
 
@@ -16,9 +15,7 @@ export default function TicketDetails() {
 
 	useEffect(() => {
 		async function fetchTickets() {
-			
 			const { data: ticket } = await getTicket(id!)
-      
 			if (ticket) {
 				setTicket(ticket)
 			}
@@ -32,8 +29,8 @@ export default function TicketDetails() {
 			<nav>
 				<h2>Ticket Details</h2>
 				<div className='ml-auto'>
-					{session.user.email === ticket?.user_email && (
-						<DeleteIcon id={ticket?.id} />
+					{session.user.email === ticket?.user_email && ticket?.id && (
+						<DeleteIcon userId={ticket?.id } />
 					)}
 				</div>
 			</nav>

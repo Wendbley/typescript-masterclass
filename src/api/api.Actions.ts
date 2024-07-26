@@ -26,7 +26,7 @@ export async function addTicketAction({request}: { request: Request }) {
           }
       }
       
-      redirect('/tickets')
+      return redirect('/dashboard/tickets')
     }
      
 
@@ -36,5 +36,5 @@ export async function addTicketAction({request}: { request: Request }) {
         if (error) {
           throw new Error('Could not delete the ticket.')
         }
-        redirect('/tickets')
+        redirect('/dashboard/tickets')
       } 

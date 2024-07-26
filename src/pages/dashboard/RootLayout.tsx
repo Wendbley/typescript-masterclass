@@ -5,7 +5,7 @@ import { Session } from '@supabase/supabase-js'
 
 function RootLayout() {
   const redirect = useNavigate()
-  const { session  } = useLoaderData() as { session: Session }
+  const  {session}   = useLoaderData() as { session: Session }
   
 
   useEffect(() => {
