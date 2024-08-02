@@ -1,7 +1,7 @@
 import { Link, Outlet } from 'react-router-dom'
 
 function ProtectedLayout() {
-    console.log('protected layout')
+	
 	return (
 		<>
 			<nav>

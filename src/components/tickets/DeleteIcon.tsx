@@ -1,4 +1,4 @@
-import { useTransition } from 'react'
+import { useState } from 'react'
 // import { deleteTicket } from '../actions'
 
 // icons & UI
@@ -6,16 +6,18 @@ import { TiDelete } from 'react-icons/ti'
 import { deleteTicketAction } from '../../api/api.Actions'
 
 export default function DeleteIcon({ userId }: { userId: string }) {
-	const [isPending, startTransition] = useTransition()
+	const [isPending, setIsPending] = useState(false)
+
+	const handleClick = () => {
+		setIsPending(true)
+		deleteTicketAction(userId).then((x) => console.log(x))
+		setIsPending(true)
+	}
 
 	return (
 		<button
 			className='btn-primary'
-			onClick={() =>
-				startTransition(() => {
-					deleteTicketAction(userId)
-				})
-			}
+			onClick={() => handleClick}
 			disabled={isPending}>
 			{isPending && (
 				<>

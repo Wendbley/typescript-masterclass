@@ -25,7 +25,6 @@ export async function addTicketAction({request}: { request: Request }) {
               throw new Error('Could not add the new ticket.')
           }
       }
-      
       return redirect('/dashboard/tickets')
     }
      
